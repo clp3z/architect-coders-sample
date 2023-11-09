@@ -7,7 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import com.devexperto.architectcoders.databinding.ActivityMainBinding
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
-import com.devexperto.architectcoders.ui.DetailActivity
+import com.devexperto.architectcoders.ui.detail.DetailActivity
+import com.devexperto.architectcoders.ui.detail.DetailPresenter.Companion.MOVIE
 
 class MainActivity : AppCompatActivity(), MainPresenter.View {
 
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
 
     override fun navigateToDetail(movie: Movie) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.MOVIE, movie)
+        intent.putExtra(MOVIE, movie)
         startActivity(intent)
     }
 
