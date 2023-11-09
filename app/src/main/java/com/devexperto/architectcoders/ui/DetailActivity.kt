@@ -27,22 +27,7 @@ class DetailActivity : AppCompatActivity() {
 
             binding.movieDetailSummary.text = overview
 
-            binding.movieDetailInfo.text = buildSpannedString {
-                bold { append("Original language: ") }
-                appendLine(originalLanguage)
-
-                bold { append("Original title: ") }
-                appendLine(originalTitle)
-
-                bold { append("Release date: ") }
-                appendLine(releaseDate)
-
-                bold { append("Popularity: ") }
-                appendLine(popularity.toString())
-
-                bold { append("Vote Average: ") }
-                append(voteAverage.toString())
-            }
+            binding.movieDetailInfo.setMovie(this)
         }
     }
 }
