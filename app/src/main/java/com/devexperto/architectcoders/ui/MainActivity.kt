@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val adapter = MoviesAdapter{
+    private val adapter = MoviesAdapter {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(DetailActivity.MOVIE, it)
         startActivity(intent)

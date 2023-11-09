@@ -28,7 +28,6 @@ class DetailActivity : AppCompatActivity() {
             binding.movieDetailSummary.text = overview
 
             binding.movieDetailInfo.text = buildSpannedString {
-
                 bold { append("Original language: ") }
                 appendLine(originalLanguage)
 
