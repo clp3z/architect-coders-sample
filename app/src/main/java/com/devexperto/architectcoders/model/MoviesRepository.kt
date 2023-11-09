@@ -1,6 +1,6 @@
 package com.devexperto.architectcoders.model
 
-import com.devexperto.architectcoders.ui.MainActivity
+import com.devexperto.architectcoders.ui.main.MainActivity
 
 class MoviesRepository(activity: MainActivity) {
 

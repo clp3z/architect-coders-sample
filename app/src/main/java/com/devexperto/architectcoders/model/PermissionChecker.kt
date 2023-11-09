@@ -1,7 +1,7 @@
 package com.devexperto.architectcoders.model
 
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
-import com.devexperto.architectcoders.ui.MainActivity
+import com.devexperto.architectcoders.ui.main.MainActivity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
