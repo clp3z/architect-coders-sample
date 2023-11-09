@@ -2,6 +2,7 @@ package com.devexperto.architectcoders.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.devexperto.architectcoders.databinding.ActivityMainBinding
 import com.devexperto.architectcoders.model.MoviesRepository
@@ -25,7 +26,9 @@ class MainActivity : AppCompatActivity() {
         binding.recycler.adapter = adapter
 
         lifecycleScope.launch {
+            binding.progressView.isVisible = true
             adapter.submitList(moviesAdapter.findPopularMovies().results)
+            binding.progressView.isVisible = false
         }
     }
 }
