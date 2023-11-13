@@ -47,5 +47,5 @@ class DetailViewModel(private val intent: Intent) : ViewModel() {
 class DetailViewModelFactory(private val intent: Intent) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        DetailViewModelFactory(intent) as T
+        DetailViewModel(intent) as T
 }

@@ -1,6 +1,7 @@
 package com.devexperto.architectcoders.ui.detail
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.devexperto.architectcoders.databinding.ActivityDetailBinding
 import com.devexperto.architectcoders.model.Movie
@@ -8,7 +9,7 @@ import com.devexperto.architectcoders.ui.loadUrl
 
 class DetailActivity : AppCompatActivity() {
 
-    private val viewModel by lazy { DetailViewModel(intent) }
+    private val viewModel: DetailViewModel by viewModels { DetailViewModelFactory(intent) }
     private lateinit var viewBinding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
