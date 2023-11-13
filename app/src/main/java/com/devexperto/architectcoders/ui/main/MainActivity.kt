@@ -1,22 +1,22 @@
 package com.devexperto.architectcoders.ui.main
 
 import android.content.Intent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.devexperto.architectcoders.databinding.ActivityMainBinding
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
 import com.devexperto.architectcoders.ui.detail.DetailActivity
 import com.devexperto.architectcoders.ui.detail.DetailPresenter.Companion.MOVIE
 
-class MainActivity : AppCompatActivity(), MainPresenter.View {
+class MainActivity : AppCompatActivity() {
 
-    private val presenter by lazy { MainPresenter(MoviesRepository(this), lifecycleScope) }
+    private val viewModel: MainViewModel by viewModels { MainViewModelFactory(MoviesRepository(this)) }
     private lateinit var viewBinding: ActivityMainBinding
 
     private val moviesAdapter = MoviesAdapter {
-        presenter.onMovieClick(it)
+        viewModel.onMovieClick(it)
     }
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
@@ -25,29 +25,19 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         setContentView(viewBinding.root)
         viewBinding.recycler.adapter = moviesAdapter
 
-        presenter.onCreate(this)
+        viewModel.viewState.observe(this, ::updateView)
     }
 
-    override fun showProgressView() {
-        viewBinding.progressView.isVisible = true
+    private fun updateView(viewState: MainViewModel.ViewState) {
+        viewBinding.progressView.isVisible = viewState.isLoading
+        moviesAdapter.submitList(viewState.movies)
+
+        viewState.navigateToDetail?.let(::navigateToDetail)
     }
 
-    override fun hideProgressView() {
-        viewBinding.progressView.isVisible = false
-    }
-
-    override fun updateMovies(movies: List<Movie>) {
-        moviesAdapter.submitList(movies)
-    }
-
-    override fun navigateToDetail(movie: Movie) {
+    private fun navigateToDetail(movie: Movie) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(MOVIE, movie)
         startActivity(intent)
-    }
-
-    override fun onDestroy() {
-        presenter.onDestroy()
-        super.onDestroy()
     }
 }
