@@ -8,7 +8,7 @@ import com.devexperto.architectcoders.databinding.ActivityMainBinding
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
 import com.devexperto.architectcoders.ui.detail.DetailActivity
-import com.devexperto.architectcoders.ui.detail.DetailPresenter.Companion.MOVIE
+import com.devexperto.architectcoders.ui.detail.DetailViewModel.Companion.MOVIE
 
 class MainActivity : AppCompatActivity() {
 
