@@ -3,7 +3,6 @@ package com.devexperto.architectcoders.ui.main
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +14,6 @@ import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.FragmentMainBinding
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
-import com.devexperto.architectcoders.ui.detail.DetailFragment.Companion.MOVIE
 import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -50,6 +48,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun navigateToDetail(movie: Movie) {
-        findNavController().navigate(R.id.action_main_to_detail, bundleOf(MOVIE to movie))
+        val navigationAction = MainFragmentDirections.actionMainToDetail(movie)
+        findNavController().navigate(navigationAction)
     }
 }

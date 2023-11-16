@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.FragmentDetailBinding
 import com.devexperto.architectcoders.ui.loadUrl
@@ -15,12 +16,10 @@ import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
-    companion object {
-        const val MOVIE = "DetailActivity:movie"
-    }
+    private val arguments: DetailFragmentArgs by navArgs()
 
     private val viewModel: DetailViewModel by viewModels {
-        DetailViewModelFactory(requireNotNull(arguments?.getParcelable(MOVIE)))
+        DetailViewModelFactory(arguments.movie)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -24,6 +24,11 @@
         android:id="@+id/detail_destination"
         android:name="com.devexperto.architectcoders.ui.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+
+        <argument
+            android:name="movie"
+            app:argType="com.devexperto.architectcoders.model.Movie" />
+    </fragment>
 
 </navigation>
