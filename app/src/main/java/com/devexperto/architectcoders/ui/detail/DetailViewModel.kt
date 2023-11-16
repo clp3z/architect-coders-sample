@@ -7,11 +7,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class DetailViewModel(private val movie: Movie) : ViewModel() {
+class DetailViewModel(movie: Movie) : ViewModel() {
 
-    data class ViewState(
-        val movie: Movie
-    )
+    data class ViewState(val movie: Movie)
 
     private var _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState(movie))
     val viewState: StateFlow<ViewState> = _viewState.asStateFlow()

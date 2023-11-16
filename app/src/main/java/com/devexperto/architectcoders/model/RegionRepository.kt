@@ -3,9 +3,9 @@ package com.devexperto.architectcoders.model
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.location.Geocoder
 import android.location.Location
-import com.devexperto.architectcoders.ui.main.MainActivity
+import androidx.appcompat.app.AppCompatActivity
 
-class RegionRepository(activity: MainActivity) {
+class RegionRepository(activity: AppCompatActivity) {
 
     companion object {
         const val DEFAULT_REGION = "US"

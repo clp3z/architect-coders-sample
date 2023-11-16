@@ -1,8 +1,8 @@
 package com.devexperto.architectcoders.model
 
-import com.devexperto.architectcoders.ui.main.MainActivity
+import androidx.appcompat.app.AppCompatActivity
 
-class MoviesRepository(activity: MainActivity) {
+class MoviesRepository(activity: AppCompatActivity) {
 
     private val apiKey = "df913d0e8d85eb724270797250eb400f"
     private val regionRepository = RegionRepository(activity)
