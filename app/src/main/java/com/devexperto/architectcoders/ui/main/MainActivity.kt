@@ -4,11 +4,15 @@ import android.content.Intent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.devexperto.architectcoders.databinding.ActivityMainBinding
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
 import com.devexperto.architectcoders.ui.detail.DetailActivity
-import com.devexperto.architectcoders.ui.detail.DetailViewModel.Companion.MOVIE
+import com.devexperto.architectcoders.ui.detail.DetailActivity.Companion.MOVIE
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +29,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
         viewBinding.recycler.adapter = moviesAdapter
 
-        viewModel.viewState.observe(this, ::updateView)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.viewState.collect(::updateView)
+            }
+        }
     }
 
     private fun updateView(viewState: MainViewModel.ViewState) {

@@ -1,12 +1,13 @@
 package com.devexperto.architectcoders.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
@@ -17,12 +18,11 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
         val navigateToDetail: Movie? = null
     )
 
-    private val _viewState = MutableLiveData(ViewState())
-    val viewState: LiveData<ViewState> get() {
-        if (_viewState.value?.movies?.isEmpty() == true) {
-            refresh()
-        }
-        return _viewState
+    private val _viewState = MutableStateFlow(ViewState())
+    val viewState: StateFlow<ViewState> = _viewState.asStateFlow()
+
+    init {
+        refresh()
     }
 
     private fun refresh() {
@@ -33,7 +33,7 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     }
 
     fun onMovieClick(movie: Movie) {
-        _viewState.value = _viewState.value?.copy(navigateToDetail = movie)
+        _viewState.value = _viewState.value.copy(navigateToDetail = movie)
     }
 }
 

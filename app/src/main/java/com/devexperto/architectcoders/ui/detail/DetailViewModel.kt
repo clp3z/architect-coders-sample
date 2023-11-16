@@ -1,51 +1,25 @@
 package com.devexperto.architectcoders.ui.detail
 
-import android.content.Intent
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.devexperto.architectcoders.model.Movie
-import com.devexperto.architectcoders.ui.getParcelableExtraCompat
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-class DetailViewModel(private val intent: Intent) : ViewModel() {
-
-    companion object {
-        const val MOVIE = "DetailActivity:movie"
-    }
+class DetailViewModel(private val movie: Movie) : ViewModel() {
 
     data class ViewState(
-        val toolbarTitle: String = "",
-        val toolbarImage: String = "",
-        val movie: Movie? = null
+        val movie: Movie
     )
 
-    private var _viewState: MutableLiveData<ViewState> = MutableLiveData(ViewState())
-    val viewState: LiveData<ViewState> get() {
-        if (_viewState.value?.movie == null) {
-            refresh()
-        }
-        return _viewState
-    }
-
-    private fun refresh() {
-        viewModelScope.launch {
-            intent.getParcelableExtraCompat<Movie>(MOVIE)?.let {
-                _viewState.value = ViewState(
-                    toolbarTitle = it.title,
-                    toolbarImage = "https://image.tmdb.org/t/p/w780${it.backdropPath ?: it.posterPath}",
-                    movie = it
-                )
-            }
-        }
-    }
+    private var _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState(movie))
+    val viewState: StateFlow<ViewState> = _viewState.asStateFlow()
 }
 
 @Suppress("UNCHECKED_CAST")
-class DetailViewModelFactory(private val intent: Intent) : ViewModelProvider.Factory {
+class DetailViewModelFactory(private val movie: Movie) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        DetailViewModel(intent) as T
+        DetailViewModel(movie) as T
 }
