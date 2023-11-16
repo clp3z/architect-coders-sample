@@ -2,7 +2,7 @@ package com.devexperto.architectcoders.model
 
 import android.annotation.SuppressLint
 import android.location.Location
-import com.devexperto.architectcoders.ui.MainActivity
+import com.devexperto.architectcoders.ui.main.MainActivity
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume

@@ -3,7 +3,7 @@ package com.devexperto.architectcoders.model
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.location.Geocoder
 import android.location.Location
-import com.devexperto.architectcoders.ui.MainActivity
+import com.devexperto.architectcoders.ui.main.MainActivity
 
 class RegionRepository(activity: MainActivity) {
 

@@ -1,7 +1,7 @@
 package com.devexperto.architectcoders.model
 
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
-import com.devexperto.architectcoders.ui.MainActivity
+import com.devexperto.architectcoders.ui.main.MainActivity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -13,10 +13,10 @@ class PermissionChecker(activity: MainActivity, private val permission: String) 
     }
 
     /**
-     * Uses the launcher to initiate a permission request. After the permission request returns
-     * onRequest(isGranted) will be called.
-     * All this is done in a coroutine that will be suspended until the request returns, and then
-     * the actual lambda onRequest will be executed.
+     * Uses the [launcher] to initiate a permission verification request.
+     * After the verification result returns, onRequest(isGranted) callback will be called.
+     * All of this is done in a coroutine that will be suspended until the registerForActivityResult
+     * result returns, and then the rewritten lambda onRequest will be executed.
      */
     suspend fun request(): Boolean = suspendCancellableCoroutine { continuation ->
         onRequest = { isGranted ->
