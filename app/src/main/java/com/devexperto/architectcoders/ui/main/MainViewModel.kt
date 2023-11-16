@@ -5,21 +5,29 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
     data class ViewState(
         var isLoading: Boolean = false,
-        val movies: List<Movie> = emptyList(),
-        val navigateToDetail: Movie? = null
+        val movies: List<Movie> = emptyList()
     )
+
+    sealed interface UIEvent {
+        data class NavigateToDetail(val movie: Movie) : UIEvent
+    }
 
     private val _viewState = MutableStateFlow(ViewState())
     val viewState: StateFlow<ViewState> = _viewState.asStateFlow()
+
+    private val _events = Channel<UIEvent>()
+    val events = _events.receiveAsFlow()
 
     init {
         refresh()
@@ -33,7 +41,9 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     }
 
     fun onMovieClick(movie: Movie) {
-        _viewState.value = _viewState.value.copy(navigateToDetail = movie)
+        viewModelScope.launch {
+            _events.send(UIEvent.NavigateToDetail(movie))
+        }
     }
 }
 

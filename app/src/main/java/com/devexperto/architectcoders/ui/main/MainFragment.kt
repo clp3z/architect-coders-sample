@@ -6,15 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.FragmentMainBinding
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
-import kotlinx.coroutines.launch
+import com.devexperto.architectcoders.ui.launchAndCollect
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -33,9 +30,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             recycler.adapter = moviesAdapter
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.viewState.collect { viewBinding.updateView(it) }
+        viewLifecycleOwner.launchAndCollect(viewModel.viewState) { viewBinding.updateView(it) }
+
+        viewLifecycleOwner.launchAndCollect(viewModel.events) { event ->
+            when (event) {
+                is MainViewModel.UIEvent.NavigateToDetail -> navigateToDetail(event.movie)
             }
         }
     }
@@ -43,8 +42,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun FragmentMainBinding.updateView(viewState: MainViewModel.ViewState) {
         progressView.isVisible = viewState.isLoading
         moviesAdapter.submitList(viewState.movies)
-
-        viewState.navigateToDetail?.let(::navigateToDetail)
     }
 
     private fun navigateToDetail(movie: Movie) {
