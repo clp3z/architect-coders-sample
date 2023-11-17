@@ -1,11 +1,11 @@
 package com.devexperto.architectcoders.model
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Application
 
-class MoviesRepository(activity: AppCompatActivity) {
+class MoviesRepository(application: Application) {
 
     private val apiKey = "df913d0e8d85eb724270797250eb400f"
-    private val regionRepository = RegionRepository(activity)
+    private val regionRepository = RegionRepository(application)
 
     suspend fun findPopularMovies(): RemoteResult {
         return RemoteConnection.service

@@ -1,24 +1,24 @@
 package com.devexperto.architectcoders.model
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.app.Application
 import android.location.Geocoder
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 
-class RegionRepository(activity: AppCompatActivity) {
+class RegionRepository(application: Application) {
 
     companion object {
         const val DEFAULT_REGION = "US"
     }
 
-    private val locationDataSource = PlayServicesLocationDataSource(activity)
-    private val locationPermissionChecker = PermissionChecker(activity, ACCESS_COARSE_LOCATION)
-    private val geocoder = Geocoder(activity)
+    private val locationDataSource = PlayServicesLocationDataSource(application)
+    private val locationPermissionChecker = PermissionChecker(application, ACCESS_COARSE_LOCATION)
+    private val geocoder = Geocoder(application)
 
     suspend fun findLastRegion(): String = findLastLocation().toRegion()
 
     private suspend fun findLastLocation(): Location? {
-        val isGranted = locationPermissionChecker.request()
+        val isGranted = locationPermissionChecker.check()
         return if (isGranted) locationDataSource.accessLastKnownLocation() else null
     }
 

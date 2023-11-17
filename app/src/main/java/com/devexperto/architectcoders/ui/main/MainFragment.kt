@@ -1,27 +1,35 @@
 package com.devexperto.architectcoders.ui.main
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.FragmentMainBinding
 import com.devexperto.architectcoders.model.Movie
 import com.devexperto.architectcoders.model.MoviesRepository
+import com.devexperto.architectcoders.ui.common.PermissionRequester
 import com.devexperto.architectcoders.ui.launchAndCollect
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory(MoviesRepository(requireActivity() as AppCompatActivity))
+        MainViewModelFactory(MoviesRepository(requireActivity().application))
     }
 
     private val moviesAdapter = MoviesAdapter {
         viewModel.onMovieClick(it)
     }
+
+    private val coarsePermissionRequester = PermissionRequester(
+        fragment = this,
+        permission = ACCESS_COARSE_LOCATION
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,13 +44,23 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun FragmentMainBinding.updateView(viewState: MainViewModel.ViewState) {
         progressView.isVisible = viewState.isLoading
         moviesAdapter.submitList(viewState.movies)
-
         viewState.navigateToDetail?.let(::navigateToDetail)
+
+        if (viewState.requestLocationPermission) {
+            requestLocationPermission()
+        }
     }
 
     private fun navigateToDetail(movie: Movie) {
         val navigationAction = MainFragmentDirections.actionMainToDetail(movie)
         findNavController().navigate(navigationAction)
         viewModel.onDetailNavigated()
+    }
+
+    private fun requestLocationPermission() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            coarsePermissionRequester.request()
+            viewModel.onLocationPermissionChecked()
+        }
     }
 }

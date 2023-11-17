@@ -15,7 +15,8 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     data class ViewState(
         var isLoading: Boolean = false,
         val movies: List<Movie> = emptyList(),
-        val navigateToDetail: Movie? = null
+        val navigateToDetail: Movie? = null,
+        val requestLocationPermission: Boolean = true
     )
 
     private val _viewState = MutableStateFlow(ViewState())
@@ -33,11 +34,15 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     }
 
     fun onMovieClick(movie: Movie) {
-        _viewState.value = _viewState.value.copy(navigateToDetail = movie)
+        _viewState.value = viewState.value.copy(navigateToDetail = movie)
     }
 
     fun onDetailNavigated() {
-        _viewState.value = _viewState.value.copy(navigateToDetail = null)
+        _viewState.value = viewState.value.copy(navigateToDetail = null)
+    }
+
+    fun onLocationPermissionChecked() {
+        _viewState.value = viewState.value.copy(requestLocationPermission = false)
     }
 }
 
