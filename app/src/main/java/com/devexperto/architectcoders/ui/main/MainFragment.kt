@@ -9,6 +9,9 @@ import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.FragmentMainBinding
 import com.devexperto.architectcoders.model.MoviesRepository
 import com.devexperto.architectcoders.ui.common.launchAndCollect
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -27,17 +30,30 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         mainState = buildMainState()
 
-        val viewBinding = FragmentMainBinding.bind(view).apply { recycler.adapter = moviesAdapter }
+        val viewBinding = FragmentMainBinding.bind(view).apply {
+            recycler.adapter = moviesAdapter
+        }
 
-        launchAndCollect(viewModel.viewState) { viewBinding.updateView(it) }
+        with(viewModel.viewState) {
+            diff(
+                mapping = { it.isLoading },
+                action = { viewBinding.progressView.isVisible = it }
+            )
+            diff(
+                mapping = { it.movies },
+                action = moviesAdapter::submitList
+            )
+        }
 
         mainState.requestLocationPermission {
             viewModel.onViewReady()
         }
     }
 
-    private fun FragmentMainBinding.updateView(viewState: MainViewModel.ViewState) {
-        progressView.isVisible = viewState.isLoading
-        moviesAdapter.submitList(viewState.movies)
+    private fun <T, U : Any> Flow<T>.diff(mapping: (T) -> U, action: (U) -> Unit) {
+        viewLifecycleOwner.launchAndCollect(
+            flow = map(mapping).distinctUntilChanged(),
+            action = action
+        )
     }
 }
