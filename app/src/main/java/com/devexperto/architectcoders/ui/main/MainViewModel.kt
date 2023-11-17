@@ -15,34 +15,16 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     data class ViewState(
         var isLoading: Boolean = false,
         val movies: List<Movie> = emptyList(),
-        val navigateToDetail: Movie? = null,
-        val requestLocationPermission: Boolean = true
     )
 
     private val _viewState = MutableStateFlow(ViewState())
     val viewState: StateFlow<ViewState> = _viewState.asStateFlow()
 
-    init {
-        refresh()
-    }
-
-    private fun refresh() {
+    fun onViewReady() {
         viewModelScope.launch {
             _viewState.value = ViewState(isLoading = true)
             _viewState.value = ViewState(movies = moviesRepository.findPopularMovies().results)
         }
-    }
-
-    fun onMovieClick(movie: Movie) {
-        _viewState.value = viewState.value.copy(navigateToDetail = movie)
-    }
-
-    fun onDetailNavigated() {
-        _viewState.value = viewState.value.copy(navigateToDetail = null)
-    }
-
-    fun onLocationPermissionChecked() {
-        _viewState.value = viewState.value.copy(requestLocationPermission = false)
     }
 }
 
