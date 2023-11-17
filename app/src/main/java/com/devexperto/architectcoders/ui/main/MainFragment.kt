@@ -30,22 +30,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             recycler.adapter = moviesAdapter
         }
 
-        viewLifecycleOwner.launchAndCollect(viewModel.viewState) { viewBinding.updateView(it) }
-
-        viewLifecycleOwner.launchAndCollect(viewModel.events) { event ->
-            when (event) {
-                is MainViewModel.UIEvent.NavigateToDetail -> navigateToDetail(event.movie)
-            }
-        }
+        launchAndCollect(viewModel.viewState) { viewBinding.updateView(it) }
     }
 
     private fun FragmentMainBinding.updateView(viewState: MainViewModel.ViewState) {
         progressView.isVisible = viewState.isLoading
         moviesAdapter.submitList(viewState.movies)
+
+        viewState.navigateToDetail?.let(::navigateToDetail)
     }
 
     private fun navigateToDetail(movie: Movie) {
         val navigationAction = MainFragmentDirections.actionMainToDetail(movie)
         findNavController().navigate(navigationAction)
+        viewModel.onDetailNavigated()
     }
 }
