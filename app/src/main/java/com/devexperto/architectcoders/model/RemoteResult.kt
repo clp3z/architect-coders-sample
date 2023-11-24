@@ -26,5 +26,9 @@ data class Movie(
     val title: String,
     val video: Boolean,
     @SerializedName("vote_average") val voteAverage: Double,
-    @SerializedName("vote_count") val voteCount: Int
-) : Parcelable
+    @SerializedName("vote_count") val voteCount: Int,
+) : Parcelable {
+
+    val posterUrl: String
+        get() = "https://image.tmdb.org/t/p/w780${backdropPath ?: posterPath}"
+}

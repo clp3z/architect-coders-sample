@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
     companion object {
-        const val networkRequestTime = 1000L
+        private const val networkRequestTime = 1000L
     }
 
     /*
@@ -32,11 +32,11 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     fun onViewReady() {
         viewModelScope.launch {
             val movies = moviesRepository.findPopularMovies().results
-            val isLoading = viewState.value.movies != movies
+            val didMoviesChange = viewState.value.movies != movies
 
-            _viewState.value = _viewState.value.copy(isLoading = isLoading)
-            delay(networkRequestTime)
-            _viewState.value = _viewState.value.copy(isLoading = false, movies = movies)
+            _viewState.value = viewState.value.copy(isLoading = didMoviesChange)
+            if (didMoviesChange) delay(networkRequestTime)
+            _viewState.value = viewState.value.copy(isLoading = false, movies = movies)
         }
     }
 }
