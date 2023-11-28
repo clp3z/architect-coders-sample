@@ -7,7 +7,7 @@
 
         <variable
             name="movie"
-            type="com.devexperto.architectcoders.model.Movie" />
+            type="com.devexperto.architectcoders.model.database.Movie" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

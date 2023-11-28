@@ -6,13 +6,13 @@ import com.devexperto.architectcoders.model.database.MovieDatabase
 
 class App : Application() {
 
-    lateinit var databse: MovieDatabase
-        private set
+    private lateinit var movieDatabase: MovieDatabase
+    val movieDAO by lazy { movieDatabase.movieDao() }
 
     override fun onCreate() {
         super.onCreate()
 
-        databse = Room.databaseBuilder(
+        movieDatabase = Room.databaseBuilder(
             context = this,
             klass = MovieDatabase::class.java,
             name = "movies-database"
