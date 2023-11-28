@@ -29,8 +29,10 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             findNavController().navigateUp()
         }
 
-        viewLifecycleOwner.launchAndCollect(viewModel.viewState) {
-            viewBinding.movie = it.movie
+        viewLifecycleOwner.launchAndCollect(viewModel.viewState) { viewState ->
+            viewState.movie?.let {
+                viewBinding.movie = it
+            }
         }
 
         viewModel.onViewReady(arguments.movieId)
