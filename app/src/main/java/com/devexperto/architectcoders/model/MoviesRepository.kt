@@ -25,6 +25,10 @@ class MoviesRepository(application: App) {
             localDataSource.save(movies.map { it.toLocalMovie() })
         }
     }
+
+    suspend fun requestMovieById(id: Int): Flow<Movie> = withContext(Dispatchers.IO) {
+        localDataSource.getById(id)
+    }
 }
 
 class MovieLocalDataSource(private val movieDAO: MovieDAO) {
@@ -32,9 +36,9 @@ class MovieLocalDataSource(private val movieDAO: MovieDAO) {
 
     fun isEmpty() = movieDAO.getMoviesCount() == 0
 
-    fun save(movies: List<Movie>) {
-        movieDAO.insertMovie(movies)
-    }
+    fun save(movies: List<Movie>) = movieDAO.insertMovie(movies)
+
+    fun getById(id: Int): Flow<Movie> = movieDAO.getMovie(id)
 }
 
 class MovieRemoteDataSource(

@@ -8,6 +8,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.FragmentDetailBinding
+import com.devexperto.architectcoders.model.MoviesRepository
+import com.devexperto.architectcoders.ui.common.app
 import com.devexperto.architectcoders.ui.common.launchAndCollect
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
@@ -15,7 +17,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val arguments: DetailFragmentArgs by navArgs()
 
     private val viewModel: DetailViewModel by viewModels {
-        DetailViewModelFactory(arguments.movie)
+        DetailViewModelFactory(MoviesRepository(requireActivity().app))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,5 +32,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         viewLifecycleOwner.launchAndCollect(viewModel.viewState) {
             viewBinding.movie = it.movie
         }
+
+        viewModel.onViewReady(arguments.movieId)
     }
 }
