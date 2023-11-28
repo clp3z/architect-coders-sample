@@ -2,11 +2,11 @@ package com.devexperto.architectcoders.model
 
 import com.devexperto.architectcoders.App
 import com.devexperto.architectcoders.model.database.Movie
-import com.devexperto.architectcoders.model.database.MovieDAO
+import com.devexperto.architectcoders.model.datasource.MovieLocalDataSource
+import com.devexperto.architectcoders.model.datasource.MovieRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import com.devexperto.architectcoders.model.Movie as RemoteMovie
 
 class MoviesRepository(application: App) {
 
@@ -28,30 +28,6 @@ class MoviesRepository(application: App) {
 
     suspend fun requestMovieById(id: Int): Flow<Movie> = withContext(Dispatchers.IO) {
         localDataSource.getById(id)
-    }
-}
-
-class MovieLocalDataSource(private val movieDAO: MovieDAO) {
-    val movies: Flow<List<Movie>> = movieDAO.getMovies()
-
-    fun isEmpty() = movieDAO.getMoviesCount() == 0
-
-    fun save(movies: List<Movie>) = movieDAO.insertMovie(movies)
-
-    fun getById(id: Int): Flow<Movie> = movieDAO.getMovie(id)
-}
-
-class MovieRemoteDataSource(
-    private val apiKey: String,
-    private val regionRepository: RegionRepository
-) {
-
-    suspend fun getPopularMovies(): RemoteResult {
-        return RemoteConnection.service
-            .listPopularMovies(
-                apiKey = apiKey,
-                region = regionRepository.findLastRegion()
-            )
     }
 }
 
