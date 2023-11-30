@@ -17,14 +17,30 @@
         android:orientation="vertical"
         android:padding="2dp">
 
-        <com.devexperto.architectcoders.ui.common.AspectRatioImageView
-            android:id="@+id/movie_cover"
-            imageUrl="@{movie.posterUrl}"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:ratio="1.5"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            android:layout_height="wrap_content">
+
+            <com.devexperto.architectcoders.ui.common.AspectRatioImageView
+                android:id="@+id/movie_cover"
+                imageUrl="@{movie.posterUrl}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                app:ratio="1.5"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_favorite_on"
+                app:isVisible="@{movie.isFavorite}"
+                tools:src="@drawable/ic_favorite_on"
+                android:importantForAccessibility="no" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/movie_title"

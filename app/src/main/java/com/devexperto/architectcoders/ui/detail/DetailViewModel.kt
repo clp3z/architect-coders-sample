@@ -24,6 +24,14 @@ class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewMode
             }
         }
     }
+
+    fun onFavoriteClicked() {
+        viewModelScope.launch {
+            viewState.value.movie?.let { movie ->
+                moviesRepository.switchFavorite(movie)
+            }
+        }
+    }
 }
 
 @Suppress("UNCHECKED_CAST")

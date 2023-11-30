@@ -5,11 +5,14 @@ import com.devexperto.architectcoders.model.database.MovieDAO
 import kotlinx.coroutines.flow.Flow
 
 class MovieLocalDataSource(private val movieDAO: MovieDAO) {
+
     val movies: Flow<List<Movie>> = movieDAO.getMovies()
 
-    fun isEmpty() = movieDAO.getMoviesCount() == 0
+    fun get(id: Int): Flow<Movie> = movieDAO.getMovie(id)
 
-    fun save(movies: List<Movie>) = movieDAO.insertMovie(movies)
+    suspend fun isEmpty() = movieDAO.getMoviesCount() == 0
 
-    fun getById(id: Int): Flow<Movie> = movieDAO.getMovie(id)
+    suspend fun save(movies: List<Movie>) = movieDAO.insertMovie(movies)
+
+    suspend fun update(movie: Movie) = movieDAO.updateMovie(movie)
 }

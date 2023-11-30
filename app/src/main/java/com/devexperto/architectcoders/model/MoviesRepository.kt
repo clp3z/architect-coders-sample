@@ -4,30 +4,29 @@ import com.devexperto.architectcoders.App
 import com.devexperto.architectcoders.model.database.Movie
 import com.devexperto.architectcoders.model.datasource.MovieLocalDataSource
 import com.devexperto.architectcoders.model.datasource.MovieRemoteDataSource
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 class MoviesRepository(application: App) {
 
     private val localDataSource = MovieLocalDataSource(application.movieDAO)
-
-    private val remoteDataSource = MovieRemoteDataSource(
-        apiKey = "df913d0e8d85eb724270797250eb400f",
-        regionRepository = RegionRepository(application)
-    )
+    private val remoteDataSource = MovieRemoteDataSource("df913d0e8d85eb724270797250eb400f")
+    private val regionRepository = RegionRepository(application)
 
     val popularMovies = localDataSource.movies
 
-    suspend fun requestPopularMovies() = withContext(Dispatchers.IO) {
+    suspend fun requestPopularMovies() {
         if (localDataSource.isEmpty()) {
-            val movies = remoteDataSource.getPopularMovies().results
+            val movies = remoteDataSource
+                .getPopularMovies(regionRepository.findLastRegion())
+                .results
             localDataSource.save(movies.map { it.toLocalMovie() })
         }
     }
 
-    suspend fun requestMovieById(id: Int): Flow<Movie> = withContext(Dispatchers.IO) {
-        localDataSource.getById(id)
+    fun requestMovieById(id: Int): Flow<Movie> = localDataSource.get(id)
+
+    suspend fun switchFavorite(movie: Movie) {
+        localDataSource.update(movie.copy(isFavorite = !movie.isFavorite))
     }
 }
 
@@ -40,5 +39,6 @@ private fun RemoteMovie.toLocalMovie() = Movie(
     originalLanguage = originalLanguage,
     popularity = popularity,
     voteAverage = voteAverage,
-    posterUrl = posterUrl
+    posterUrl = posterUrl,
+    isFavorite = false
 )

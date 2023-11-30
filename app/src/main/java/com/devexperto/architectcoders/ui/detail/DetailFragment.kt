@@ -29,6 +29,10 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             findNavController().navigateUp()
         }
 
+        viewBinding.favoriteActionButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
+
         viewLifecycleOwner.launchAndCollect(viewModel.viewState) { viewState ->
             viewState.movie?.let {
                 viewBinding.movie = it

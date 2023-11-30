@@ -1,19 +1,15 @@
 package com.devexperto.architectcoders.model.datasource
 
-import com.devexperto.architectcoders.model.RegionRepository
 import com.devexperto.architectcoders.model.RemoteConnection
 import com.devexperto.architectcoders.model.RemoteResult
 
-class MovieRemoteDataSource(
-    private val apiKey: String,
-    private val regionRepository: RegionRepository
-) {
+class MovieRemoteDataSource(private val apiKey: String) {
 
-    suspend fun getPopularMovies(): RemoteResult {
+    suspend fun getPopularMovies(region: String): RemoteResult {
         return RemoteConnection.service
             .listPopularMovies(
                 apiKey = apiKey,
-                region = regionRepository.findLastRegion()
+                region = region
             )
     }
 }
