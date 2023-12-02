@@ -14,7 +14,9 @@ class MoviesRepository(application: App) {
 
     val popularMovies = localDataSource.movies
 
-    suspend fun requestPopularMovies() {
+    fun requestMovieById(id: Int): Flow<Movie> = localDataSource.get(id)
+
+    suspend fun requestPopularMovies(): Error? = tryCall {
         if (localDataSource.isEmpty()) {
             val movies = remoteDataSource
                 .getPopularMovies(regionRepository.findLastRegion())
@@ -23,9 +25,7 @@ class MoviesRepository(application: App) {
         }
     }
 
-    fun requestMovieById(id: Int): Flow<Movie> = localDataSource.get(id)
-
-    suspend fun switchFavorite(movie: Movie) {
+    suspend fun switchFavorite(movie: Movie): Error? = tryCall {
         localDataSource.update(movie.copy(isFavorite = !movie.isFavorite))
     }
 }

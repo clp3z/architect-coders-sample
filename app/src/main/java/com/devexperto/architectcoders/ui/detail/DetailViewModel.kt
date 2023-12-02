@@ -3,6 +3,7 @@ package com.devexperto.architectcoders.ui.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.devexperto.architectcoders.model.Error
 import com.devexperto.architectcoders.model.MoviesRepository
 import com.devexperto.architectcoders.model.database.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,10 @@ import kotlinx.coroutines.launch
 
 class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
-    data class ViewState(val movie: Movie? = null)
+    data class ViewState(
+        val movie: Movie? = null,
+        val error: Error? = null
+    )
 
     private var _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState())
     val viewState: StateFlow<ViewState> = _viewState.asStateFlow()
@@ -28,7 +32,8 @@ class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewMode
     fun onFavoriteClicked() {
         viewModelScope.launch {
             viewState.value.movie?.let { movie ->
-                moviesRepository.switchFavorite(movie)
+                val error = moviesRepository.switchFavorite(movie)
+                _viewState.value = viewState.value.copy(error = error)
             }
         }
     }

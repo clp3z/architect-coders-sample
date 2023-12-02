@@ -1,16 +1,20 @@
 package com.devexperto.architectcoders.ui.main
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.devexperto.architectcoders.R
+import com.devexperto.architectcoders.model.Error
 import com.devexperto.architectcoders.model.database.Movie
 import com.devexperto.architectcoders.ui.common.PermissionRequester
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 fun Fragment.buildMainState(
+    context: Context = requireContext(),
     navController: NavController = findNavController(),
     coroutineScope: CoroutineScope = viewLifecycleOwner.lifecycleScope,
     permissionRequester: PermissionRequester =
@@ -18,9 +22,10 @@ fun Fragment.buildMainState(
             this,
             ACCESS_COARSE_LOCATION
         )
-) = MainState(navController, coroutineScope, permissionRequester)
+) = MainState(context, navController, coroutineScope, permissionRequester)
 
 class MainState(
+    private val context: Context,
     private val navController: NavController,
     private val coroutineScope: CoroutineScope,
     private val permissionRequester: PermissionRequester
@@ -37,4 +42,12 @@ class MainState(
             onPermissionResult(isGranted)
         }
     }
+
+    fun toErrorMessage(error: Error?): String = error?.let {
+        when (it) {
+            is Error.Sever -> context.getString(R.string.sever_error_code, it.code)
+            is Error.Unknown -> context.getString(R.string.unknown_error, it.message)
+            else -> context.getString(R.string.connectivity_error)
+        }
+    } ?: ""
 }

@@ -34,6 +34,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewLifecycleOwner.launchAndCollect(viewModel.viewState) {
             viewBinding.isLoading = it.isLoading
             viewBinding.movies = it.movies
+            viewBinding.error = mainState.toErrorMessage(it.error)
         }
 
         mainState.requestLocationPermission {
