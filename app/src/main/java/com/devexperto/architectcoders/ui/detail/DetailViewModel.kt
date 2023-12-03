@@ -6,9 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.devexperto.architectcoders.model.Error
 import com.devexperto.architectcoders.model.MoviesRepository
 import com.devexperto.architectcoders.model.database.Movie
+import com.devexperto.architectcoders.model.toError
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
@@ -23,9 +26,13 @@ class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewMode
 
     fun onViewReady(movieId: Int) {
         viewModelScope.launch {
-            moviesRepository.requestMovieById(movieId).collect { movie ->
-                _viewState.value = ViewState(movie)
-            }
+            moviesRepository.requestMovieById(movieId)
+                .catch { throwable ->
+                    _viewState.update { it.copy(error = throwable.toError()) }
+                }
+                .collect { movie ->
+                    _viewState.update { ViewState(movie) }
+                }
         }
     }
 
@@ -33,7 +40,7 @@ class DetailViewModel(private val moviesRepository: MoviesRepository) : ViewMode
         viewModelScope.launch {
             viewState.value.movie?.let { movie ->
                 val error = moviesRepository.switchFavorite(movie)
-                _viewState.value = viewState.value.copy(error = error)
+                _viewState.update { it.copy(error = error) }
             }
         }
     }

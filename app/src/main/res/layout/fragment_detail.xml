@@ -8,6 +8,10 @@
         <variable
             name="movie"
             type="com.devexperto.architectcoders.model.database.Movie" />
+
+        <variable
+            name="error"
+            type="String" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -101,6 +105,16 @@
             app:layout_constraintEnd_toEndOf="@id/movie_detail_toolbar"
             app:layout_constraintStart_toStartOf="@id/movie_detail_toolbar"
             tools:src="@drawable/ic_favorite_on" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{error}"
+            android:textColor="?attr/colorError"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="An error has occurred!" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

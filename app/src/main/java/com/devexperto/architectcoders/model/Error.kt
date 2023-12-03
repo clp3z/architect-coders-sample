@@ -1,5 +1,7 @@
 package com.devexperto.architectcoders.model
 
+import android.content.Context
+import com.devexperto.architectcoders.R
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -21,3 +23,12 @@ inline fun <T> tryCall(function: () -> T): Error? = try {
 } catch (error: Throwable) {
     error.toError()
 }
+
+// Added to avoid creating a DetailState class
+fun toErrorMessage(context: Context, error: Error?): String = error?.let {
+    when (it) {
+        is Error.Sever -> context.getString(R.string.sever_error_code, it.code)
+        is Error.Unknown -> context.getString(R.string.unknown_error, it.message)
+        else -> context.getString(R.string.connectivity_error)
+    }
+} ?: ""

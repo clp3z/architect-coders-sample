@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.FragmentDetailBinding
 import com.devexperto.architectcoders.model.MoviesRepository
+import com.devexperto.architectcoders.model.toErrorMessage
 import com.devexperto.architectcoders.ui.common.app
 import com.devexperto.architectcoders.ui.common.launchAndCollect
 
@@ -36,6 +37,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         viewLifecycleOwner.launchAndCollect(viewModel.viewState) { viewState ->
             viewState.movie?.let {
                 viewBinding.movie = it
+                viewBinding.error = toErrorMessage(requireContext(), viewState.error)
             }
         }
 
