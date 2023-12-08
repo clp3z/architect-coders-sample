@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.model
+package com.devexperto.architectcoders.data
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

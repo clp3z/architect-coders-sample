@@ -3,10 +3,11 @@ package com.devexperto.architectcoders.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.devexperto.architectcoders.model.Error
-import com.devexperto.architectcoders.model.MoviesRepository
-import com.devexperto.architectcoders.model.database.Movie
-import com.devexperto.architectcoders.model.toError
+import com.devexperto.architectcoders.data.Error
+import com.devexperto.architectcoders.data.database.Movie
+import com.devexperto.architectcoders.data.toError
+import com.devexperto.architectcoders.domain.GetPopularMoviesUseCase
+import com.devexperto.architectcoders.domain.RequestPopularMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
+class MainViewModel(
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val requestPopularMoviesUseCase: RequestPopularMoviesUseCase
+) : ViewModel() {
 
     data class ViewState(
         var isLoading: Boolean = true,
@@ -27,7 +31,7 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
 
     init {
         viewModelScope.launch {
-            moviesRepository.popularMovies
+            getPopularMoviesUseCase()
                 .catch { throwable ->
                     _viewState.update { it.copy(error = throwable.toError()) }
                 }
@@ -41,7 +45,7 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
         viewModelScope.launch {
             _viewState.update { it.copy(isLoading = true) }
 
-            val error = moviesRepository.requestPopularMovies()
+            val error = requestPopularMoviesUseCase()
             _viewState.update { it.copy(isLoading = false, error = error) }
         }
     }
@@ -49,9 +53,10 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
 
 @Suppress("UNCHECKED_CAST")
 class MainViewModelFactory(
-    private val moviesRepository: MoviesRepository
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val requestPopularMoviesUseCase: RequestPopularMoviesUseCase
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        MainViewModel(moviesRepository) as T
+        MainViewModel(getPopularMoviesUseCase, requestPopularMoviesUseCase) as T
 }

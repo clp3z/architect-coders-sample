@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.model
+package com.devexperto.architectcoders.data
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Application

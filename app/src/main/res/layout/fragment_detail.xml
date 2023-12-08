@@ -7,7 +7,7 @@
 
         <variable
             name="movie"
-            type="com.devexperto.architectcoders.model.database.Movie" />
+            type="com.devexperto.architectcoders.data.database.Movie" />
 
         <variable
             name="error"
