@@ -7,10 +7,10 @@ import androidx.fragment.app.viewModels
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.data.MoviesRepository
 import com.devexperto.architectcoders.databinding.FragmentMainBinding
-import com.devexperto.architectcoders.domain.GetPopularMoviesUseCase
-import com.devexperto.architectcoders.domain.RequestPopularMoviesUseCase
 import com.devexperto.architectcoders.ui.common.app
 import com.devexperto.architectcoders.ui.common.launchAndCollect
+import com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase
+import com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 

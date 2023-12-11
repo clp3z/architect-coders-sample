@@ -10,10 +10,10 @@ import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.data.MoviesRepository
 import com.devexperto.architectcoders.data.toErrorMessage
 import com.devexperto.architectcoders.databinding.FragmentDetailBinding
-import com.devexperto.architectcoders.domain.RequestMovieUseCase
-import com.devexperto.architectcoders.domain.SwitchFavoriteUseCase
 import com.devexperto.architectcoders.ui.common.app
 import com.devexperto.architectcoders.ui.common.launchAndCollect
+import com.devexperto.architectcoders.usecases.RequestMovieUseCase
+import com.devexperto.architectcoders.usecases.SwitchFavoriteUseCase
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 

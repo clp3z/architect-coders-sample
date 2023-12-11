@@ -7,7 +7,7 @@
 
         <variable
             name="movie"
-            type="com.devexperto.architectcoders.data.database.Movie" />
+            type="com.devexperto.architectcoders.domain.Movie" />
 
         <variable
             name="error"
@@ -43,6 +43,7 @@
                     android:scaleType="centerCrop"
                     app:imageUrl="@{movie.posterUrl}"
                     app:layout_collapseMode="parallax"
+                    android:importantForAccessibility="no"
                     tools:src="@mipmap/ic_launcher" />
 
                 <androidx.appcompat.widget.Toolbar

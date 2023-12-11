@@ -4,6 +4,8 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Application
 import android.location.Geocoder
 import android.location.Location
+import com.devexperto.architectcoders.data.datasources.LocationDataSource
+import com.devexperto.architectcoders.framework.datasources.PlayServicesLocationDataSource
 
 class RegionRepository(application: Application) {
 
@@ -11,7 +13,7 @@ class RegionRepository(application: Application) {
         const val DEFAULT_REGION = "US"
     }
 
-    private val locationDataSource = PlayServicesLocationDataSource(application)
+    private val locationDataSource: LocationDataSource = PlayServicesLocationDataSource(application)
     private val locationPermissionChecker = PermissionChecker(application, ACCESS_COARSE_LOCATION)
     private val geocoder = Geocoder(application)
 

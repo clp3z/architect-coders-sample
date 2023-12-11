@@ -1,15 +1,12 @@
-package com.devexperto.architectcoders.data
+package com.devexperto.architectcoders.framework.datasources
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Location
+import com.devexperto.architectcoders.data.datasources.LocationDataSource
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-
-interface LocationDataSource {
-    suspend fun accessLastKnownLocation(): Location?
-}
 
 class PlayServicesLocationDataSource(activity: Application) : LocationDataSource {
 

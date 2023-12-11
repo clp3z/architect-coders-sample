@@ -1,15 +1,17 @@
 package com.devexperto.architectcoders.data
 
 import com.devexperto.architectcoders.App
-import com.devexperto.architectcoders.data.database.Movie
-import com.devexperto.architectcoders.data.datasource.MovieLocalDataSource
-import com.devexperto.architectcoders.data.datasource.MovieRemoteDataSource
+import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
+import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
+import com.devexperto.architectcoders.domain.Movie
+import com.devexperto.architectcoders.framework.datasources.MovieRetrofitDataSource
+import com.devexperto.architectcoders.framework.datasources.MovieRoomDataSource
 import kotlinx.coroutines.flow.Flow
 
 class MoviesRepository(application: App) {
 
-    private val localDataSource = MovieLocalDataSource(application.movieDAO)
-    private val remoteDataSource = MovieRemoteDataSource("df913d0e8d85eb724270797250eb400f")
+    private val localDataSource: MovieLocalDataSource = MovieRoomDataSource(application.movieDAO)
+    private val remoteDataSource: MovieRemoteDataSource = MovieRetrofitDataSource("df913d0e8d85eb724270797250eb400f")
     private val regionRepository = RegionRepository(application)
 
     val popularMovies = localDataSource.movies
@@ -20,8 +22,8 @@ class MoviesRepository(application: App) {
         if (localDataSource.isEmpty()) {
             val movies = remoteDataSource
                 .getPopularMovies(regionRepository.findLastRegion())
-                .results
-            localDataSource.save(movies.map { it.toLocalMovie() })
+
+            localDataSource.save(movies)
         }
     }
 
@@ -29,16 +31,3 @@ class MoviesRepository(application: App) {
         localDataSource.update(movie.copy(isFavorite = !movie.isFavorite))
     }
 }
-
-private fun RemoteMovie.toLocalMovie() = Movie(
-    id = id,
-    title = title,
-    overview = overview,
-    releaseDate = releaseDate,
-    originalTitle = originalTitle,
-    originalLanguage = originalLanguage,
-    popularity = popularity,
-    voteAverage = voteAverage,
-    posterUrl = posterUrl,
-    isFavorite = false
-)
