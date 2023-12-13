@@ -6,7 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.data.MoviesRepository
+import com.devexperto.architectcoders.data.RegionRepository
+import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
+import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
 import com.devexperto.architectcoders.databinding.FragmentMainBinding
+import com.devexperto.architectcoders.framework.datasources.MovieRetrofitDataSource
+import com.devexperto.architectcoders.framework.datasources.MovieRoomDataSource
 import com.devexperto.architectcoders.ui.common.app
 import com.devexperto.architectcoders.ui.common.launchAndCollect
 import com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase
@@ -15,7 +20,11 @@ import com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val viewModel: MainViewModel by viewModels {
-        val moviesRepository = MoviesRepository(requireActivity().app)
+        val application = requireActivity().app
+        val localDataSource: MovieLocalDataSource = MovieRoomDataSource(application.movieDAO)
+        val remoteDataSource: MovieRemoteDataSource = MovieRetrofitDataSource("df913d0e8d85eb724270797250eb400f")
+        val regionRepository = RegionRepository(application)
+        val moviesRepository = MoviesRepository(regionRepository, localDataSource, remoteDataSource)
         MainViewModelFactory(
             GetPopularMoviesUseCase(moviesRepository),
             RequestPopularMoviesUseCase(moviesRepository)

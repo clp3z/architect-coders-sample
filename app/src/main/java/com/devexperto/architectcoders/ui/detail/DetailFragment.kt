@@ -8,8 +8,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.data.MoviesRepository
+import com.devexperto.architectcoders.data.RegionRepository
+import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
+import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
 import com.devexperto.architectcoders.data.toErrorMessage
 import com.devexperto.architectcoders.databinding.FragmentDetailBinding
+import com.devexperto.architectcoders.framework.datasources.MovieRetrofitDataSource
+import com.devexperto.architectcoders.framework.datasources.MovieRoomDataSource
 import com.devexperto.architectcoders.ui.common.app
 import com.devexperto.architectcoders.ui.common.launchAndCollect
 import com.devexperto.architectcoders.usecases.RequestMovieUseCase
@@ -20,7 +25,11 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val arguments: DetailFragmentArgs by navArgs()
 
     private val viewModel: DetailViewModel by viewModels {
-        val moviesRepository = MoviesRepository(requireActivity().app)
+        val application = requireActivity().app
+        val localDataSource: MovieLocalDataSource = MovieRoomDataSource(application.movieDAO)
+        val remoteDataSource: MovieRemoteDataSource = MovieRetrofitDataSource("df913d0e8d85eb724270797250eb400f")
+        val regionRepository = RegionRepository(application)
+        val moviesRepository = MoviesRepository(regionRepository, localDataSource, remoteDataSource)
         DetailViewModelFactory(
             RequestMovieUseCase(moviesRepository),
             SwitchFavoriteUseCase(moviesRepository)

@@ -1,18 +1,15 @@
 package com.devexperto.architectcoders.data
 
-import com.devexperto.architectcoders.App
 import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
 import com.devexperto.architectcoders.domain.Movie
-import com.devexperto.architectcoders.framework.datasources.MovieRetrofitDataSource
-import com.devexperto.architectcoders.framework.datasources.MovieRoomDataSource
 import kotlinx.coroutines.flow.Flow
 
-class MoviesRepository(application: App) {
-
-    private val localDataSource: MovieLocalDataSource = MovieRoomDataSource(application.movieDAO)
-    private val remoteDataSource: MovieRemoteDataSource = MovieRetrofitDataSource("df913d0e8d85eb724270797250eb400f")
-    private val regionRepository = RegionRepository(application)
+class MoviesRepository(
+    private val regionRepository: RegionRepository,
+    private val localDataSource: MovieLocalDataSource,
+    private val remoteDataSource: MovieRemoteDataSource
+) {
 
     val popularMovies = localDataSource.movies
 
