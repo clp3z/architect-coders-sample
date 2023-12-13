@@ -3,9 +3,9 @@ package com.devexperto.architectcoders.ui.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.devexperto.architectcoders.data.Error
-import com.devexperto.architectcoders.data.toError
+import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
+import com.devexperto.architectcoders.domain.toError
 import com.devexperto.architectcoders.usecases.RequestMovieUseCase
 import com.devexperto.architectcoders.usecases.SwitchFavoriteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow

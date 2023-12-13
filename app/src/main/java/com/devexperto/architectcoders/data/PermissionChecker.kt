@@ -6,9 +6,8 @@ import androidx.core.content.ContextCompat
 
 class PermissionChecker(private val application: Application, private val permission: String) {
 
-    fun check(): Boolean =
-        ContextCompat.checkSelfPermission(
-            application,
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
+    fun check(): Boolean = ContextCompat.checkSelfPermission(
+        application,
+        permission
+    ) == PackageManager.PERMISSION_GRANTED
 }

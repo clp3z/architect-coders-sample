@@ -1,7 +1,7 @@
 package com.devexperto.architectcoders.usecases
 
-import com.devexperto.architectcoders.data.Error
 import com.devexperto.architectcoders.data.MoviesRepository
+import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
 
 class SwitchFavoriteUseCase(private val moviesRepository: MoviesRepository) {

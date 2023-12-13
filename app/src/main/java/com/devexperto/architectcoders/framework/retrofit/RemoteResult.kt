@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.data
+package com.devexperto.architectcoders.framework.retrofit
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

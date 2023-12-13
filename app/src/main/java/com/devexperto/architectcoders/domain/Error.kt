@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.data
+package com.devexperto.architectcoders.domain
 
 import android.content.Context
 import com.devexperto.architectcoders.R

@@ -11,8 +11,8 @@ import com.devexperto.architectcoders.data.MoviesRepository
 import com.devexperto.architectcoders.data.RegionRepository
 import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
-import com.devexperto.architectcoders.data.toErrorMessage
 import com.devexperto.architectcoders.databinding.FragmentDetailBinding
+import com.devexperto.architectcoders.domain.toErrorMessage
 import com.devexperto.architectcoders.framework.datasources.MovieRetrofitDataSource
 import com.devexperto.architectcoders.framework.datasources.MovieRoomDataSource
 import com.devexperto.architectcoders.ui.common.app
