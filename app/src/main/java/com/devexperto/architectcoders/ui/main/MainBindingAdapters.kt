@@ -2,10 +2,9 @@ package com.devexperto.architectcoders.ui.main
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.devexperto.architectcoders.domain.Movie
 
 @BindingAdapter("items")
-fun RecyclerView.bindItems(items: List<Movie>?) {
+fun RecyclerView.bindItems(items: List<com.devexperto.architectcoders.domain.Movie>?) {
     items?.let {
         (adapter as? MoviesAdapter)?.submitList(it)
     }

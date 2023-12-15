@@ -3,11 +3,7 @@ package com.devexperto.architectcoders.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.devexperto.architectcoders.domain.Error
-import com.devexperto.architectcoders.domain.Movie
-import com.devexperto.architectcoders.domain.toError
-import com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase
-import com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
+import com.devexperto.architectcoders.framework.toError
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,14 +12,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val requestPopularMoviesUseCase: RequestPopularMoviesUseCase
+    private val getPopularMoviesUseCase: com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase,
+    private val requestPopularMoviesUseCase: com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
 ) : ViewModel() {
 
     data class ViewState(
         var isLoading: Boolean = true,
-        val movies: List<Movie> = emptyList(),
-        val error: Error? = null
+        val movies: List<com.devexperto.architectcoders.domain.Movie> = emptyList(),
+        val error: com.devexperto.architectcoders.domain.Error? = null
     )
 
     private val _viewState = MutableStateFlow(ViewState())
@@ -53,8 +49,8 @@ class MainViewModel(
 
 @Suppress("UNCHECKED_CAST")
 class MainViewModelFactory(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val requestPopularMoviesUseCase: RequestPopularMoviesUseCase
+    private val getPopularMoviesUseCase: com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase,
+    private val requestPopularMoviesUseCase: com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T =

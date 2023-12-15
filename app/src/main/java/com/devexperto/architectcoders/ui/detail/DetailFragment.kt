@@ -12,9 +12,11 @@ import com.devexperto.architectcoders.data.RegionRepository
 import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
 import com.devexperto.architectcoders.databinding.FragmentDetailBinding
-import com.devexperto.architectcoders.domain.toErrorMessage
-import com.devexperto.architectcoders.framework.datasources.MovieRetrofitDataSource
-import com.devexperto.architectcoders.framework.datasources.MovieRoomDataSource
+import com.devexperto.architectcoders.framework.AndroidPermissionChecker
+import com.devexperto.architectcoders.framework.PlayServicesLocationDataSource
+import com.devexperto.architectcoders.framework.database.MovieRoomDataSource
+import com.devexperto.architectcoders.framework.retrofit.MovieRetrofitDataSource
+import com.devexperto.architectcoders.framework.toErrorMessage
 import com.devexperto.architectcoders.ui.common.app
 import com.devexperto.architectcoders.ui.common.launchAndCollect
 import com.devexperto.architectcoders.usecases.RequestMovieUseCase
@@ -28,8 +30,15 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         val application = requireActivity().app
         val localDataSource: MovieLocalDataSource = MovieRoomDataSource(application.movieDAO)
         val remoteDataSource: MovieRemoteDataSource = MovieRetrofitDataSource("df913d0e8d85eb724270797250eb400f")
-        val regionRepository = RegionRepository(application)
-        val moviesRepository = MoviesRepository(regionRepository, localDataSource, remoteDataSource)
+        val regionRepository = RegionRepository(
+            PlayServicesLocationDataSource(application),
+            AndroidPermissionChecker(application)
+        )
+        val moviesRepository = MoviesRepository(
+            regionRepository,
+            localDataSource,
+            remoteDataSource
+        )
         DetailViewModelFactory(
             RequestMovieUseCase(moviesRepository),
             SwitchFavoriteUseCase(moviesRepository)
@@ -52,7 +61,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         viewLifecycleOwner.launchAndCollect(viewModel.viewState) { viewState ->
             viewState.movie?.let {
                 viewBinding.movie = it
-                viewBinding.error = toErrorMessage(requireContext(), viewState.error)
+                viewBinding.error = toErrorMessage(viewState.error)
             }
         }
 

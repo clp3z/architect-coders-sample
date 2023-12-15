@@ -1,8 +1,9 @@
-package com.devexperto.architectcoders.framework.datasources
+package com.devexperto.architectcoders.framework.database
 
 import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
+import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
-import com.devexperto.architectcoders.framework.database.MovieDAO
+import com.devexperto.architectcoders.framework.tryCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.devexperto.architectcoders.framework.database.Movie as DatabaseMovie
@@ -15,9 +16,19 @@ class MovieRoomDataSource(private val movieDAO: MovieDAO) : MovieLocalDataSource
 
     override suspend fun isEmpty() = movieDAO.getMoviesCount() == 0
 
-    override suspend fun save(movies: List<Movie>) = movieDAO.insertMovie(movies.fromDomainModel())
+    override suspend fun save(movies: List<Movie>): Error? = tryCall {
+        movieDAO.insertMovie(movies.fromDomainModel())
+    }.fold(
+        ifLeft = { it },
+        ifRight = { null }
+    )
 
-    override suspend fun update(movie: Movie) = movieDAO.updateMovie(movie.fromDomainModel())
+    override suspend fun update(movie: Movie): Error? = tryCall {
+        movieDAO.updateMovie(movie.fromDomainModel())
+    }.fold(
+        ifLeft = { it },
+        ifRight = { null }
+    )
 }
 
 private fun DatabaseMovie.toDomainModel() = Movie(

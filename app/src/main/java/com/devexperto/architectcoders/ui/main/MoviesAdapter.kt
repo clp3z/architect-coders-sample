@@ -6,12 +6,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.ViewMovieBinding
-import com.devexperto.architectcoders.domain.Movie
 import com.devexperto.architectcoders.ui.common.basicDiffUtil
 import com.devexperto.architectcoders.ui.common.inflate
 
-class MoviesAdapter(private val listener: (Movie) -> Unit) :
-    ListAdapter<Movie, MoviesAdapter.ViewHolder>(
+class MoviesAdapter(private val listener: (com.devexperto.architectcoders.domain.Movie) -> Unit) :
+    ListAdapter<com.devexperto.architectcoders.domain.Movie, MoviesAdapter.ViewHolder>(
         basicDiffUtil({ old, new -> old.id == new.id })
     ) {
 
@@ -28,7 +27,7 @@ class MoviesAdapter(private val listener: (Movie) -> Unit) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ViewMovieBinding.bind(view)
-        fun bind(movie: Movie) {
+        fun bind(movie: com.devexperto.architectcoders.domain.Movie) {
             binding.movie = movie
         }
     }

@@ -4,7 +4,6 @@ import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
 import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
-import com.devexperto.architectcoders.domain.tryCall
 import kotlinx.coroutines.flow.Flow
 
 class MoviesRepository(
@@ -17,16 +16,16 @@ class MoviesRepository(
 
     fun requestMovieById(id: Int): Flow<Movie> = localDataSource.get(id)
 
-    suspend fun requestPopularMovies(): Error? = tryCall {
+    suspend fun requestPopularMovies(): Error? {
         if (localDataSource.isEmpty()) {
-            val movies = remoteDataSource
-                .getPopularMovies(regionRepository.findLastRegion())
-
-            localDataSource.save(movies)
+            val movies = remoteDataSource.getPopularMovies(regionRepository.getLastRegion())
+            movies.fold(ifLeft = { return it }) {
+                localDataSource.save(it)
+            }
         }
+        return null
     }
 
-    suspend fun switchFavorite(movie: Movie): Error? = tryCall {
+    suspend fun switchFavorite(movie: Movie): Error? =
         localDataSource.update(movie.copy(isFavorite = !movie.isFavorite))
-    }
 }

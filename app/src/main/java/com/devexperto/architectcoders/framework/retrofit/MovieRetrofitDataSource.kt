@@ -1,18 +1,16 @@
-package com.devexperto.architectcoders.framework.datasources
+package com.devexperto.architectcoders.framework.retrofit
 
+import arrow.core.Either
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
+import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
-import com.devexperto.architectcoders.framework.retrofit.RemoteConnection
-import com.devexperto.architectcoders.framework.retrofit.RemoteMovie
+import com.devexperto.architectcoders.framework.tryCall
 
 class MovieRetrofitDataSource(private val apiKey: String) : MovieRemoteDataSource {
 
-    override suspend fun getPopularMovies(region: String): List<Movie> {
-        return RemoteConnection.service
-            .listPopularMovies(
-                apiKey = apiKey,
-                region = region
-            )
+    override suspend fun getPopularMovies(region: String): Either<Error, List<Movie>> = tryCall {
+        RemoteConnection.service
+            .listPopularMovies(apiKey, region)
             .results
             .toDomainModel()
     }
