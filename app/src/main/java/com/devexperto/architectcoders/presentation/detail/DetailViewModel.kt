@@ -1,7 +1,6 @@
 package com.devexperto.architectcoders.presentation.detail
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
@@ -48,14 +47,4 @@ class DetailViewModel(
             }
         }
     }
-}
-
-@Suppress("UNCHECKED_CAST")
-class DetailViewModelFactory(
-    private val requestMovieUseCase: RequestMovieUseCase,
-    private val switchFavoriteUseCase: SwitchFavoriteUseCase
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        DetailViewModel(requestMovieUseCase, switchFavoriteUseCase) as T
 }
