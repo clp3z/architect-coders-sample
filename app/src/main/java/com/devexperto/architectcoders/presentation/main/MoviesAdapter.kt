@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui.main
+package com.devexperto.architectcoders.presentation.main
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.devexperto.architectcoders.R
 import com.devexperto.architectcoders.databinding.ViewMovieBinding
-import com.devexperto.architectcoders.ui.common.basicDiffUtil
-import com.devexperto.architectcoders.ui.common.inflate
+import com.devexperto.architectcoders.presentation.common.basicDiffUtil
+import com.devexperto.architectcoders.presentation.common.inflate
 
 class MoviesAdapter(private val listener: (com.devexperto.architectcoders.domain.Movie) -> Unit) :
     ListAdapter<com.devexperto.architectcoders.domain.Movie, MoviesAdapter.ViewHolder>(

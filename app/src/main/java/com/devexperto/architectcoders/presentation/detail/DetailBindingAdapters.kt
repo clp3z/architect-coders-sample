@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui.detail
+package com.devexperto.architectcoders.presentation.detail
 
 import androidx.databinding.BindingAdapter
 

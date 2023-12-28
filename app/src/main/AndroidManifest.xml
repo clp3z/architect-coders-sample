@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ArchitectCoders.NoActionBar">
 
         <activity
-            android:name=".ui.NavHostActivity"
+            android:name=".presentation.NavHostActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

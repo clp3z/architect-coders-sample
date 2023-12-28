@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui
+package com.devexperto.architectcoders.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

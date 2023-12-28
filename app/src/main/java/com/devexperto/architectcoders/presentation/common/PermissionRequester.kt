@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui.common
+package com.devexperto.architectcoders.presentation.common
 
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment

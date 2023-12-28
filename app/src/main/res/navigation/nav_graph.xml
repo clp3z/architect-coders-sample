@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/main_destination"
-        android:name="com.devexperto.architectcoders.ui.main.MainFragment"
+        android:name="com.devexperto.architectcoders.presentation.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
 
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/detail_destination"
-        android:name="com.devexperto.architectcoders.ui.detail.DetailFragment"
+        android:name="com.devexperto.architectcoders.presentation.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
 

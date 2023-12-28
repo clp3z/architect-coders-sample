@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui.main
+package com.devexperto.architectcoders.presentation.main
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.devexperto.architectcoders.domain.Movie
-import com.devexperto.architectcoders.ui.common.PermissionRequester
+import com.devexperto.architectcoders.presentation.common.PermissionRequester
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

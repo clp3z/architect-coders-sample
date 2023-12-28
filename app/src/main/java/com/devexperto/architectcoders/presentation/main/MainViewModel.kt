@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui.main
+package com.devexperto.architectcoders.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

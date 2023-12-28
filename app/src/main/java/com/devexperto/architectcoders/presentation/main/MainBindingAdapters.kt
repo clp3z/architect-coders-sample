@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui.main
+package com.devexperto.architectcoders.presentation.main
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView

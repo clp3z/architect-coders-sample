@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.devexperto.architectcoders.ui.common.AspectRatioImageView
+            <com.devexperto.architectcoders.presentation.common.AspectRatioImageView
                 android:id="@+id/movie_cover"
                 imageUrl="@{movie.posterUrl}"
                 android:layout_width="match_parent"

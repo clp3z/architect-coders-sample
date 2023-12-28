@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.ui.common
+package com.devexperto.architectcoders.presentation.common
 
 import android.view.View
 import android.widget.ImageView
