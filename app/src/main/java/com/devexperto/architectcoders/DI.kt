@@ -21,10 +21,12 @@ import com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
 import com.devexperto.architectcoders.usecases.SwitchFavoriteUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 fun Application.initDI() {
@@ -48,23 +50,23 @@ private val appModule = module {
 
     single { get<MovieDatabase>().movieDao() }
 
-    factory<MovieLocalDataSource> { MovieRoomDataSource(get()) }
     factory<MovieRemoteDataSource> { MovieRetrofitDataSource(get(named("apiKey"))) }
-    factory<LocationDataSource> { PlayServicesLocationDataSource(get()) }
-    factory<PermissionChecker> { AndroidPermissionChecker(get()) }
+    factoryOf(::MovieRoomDataSource) bind MovieLocalDataSource::class
+    factoryOf(::PlayServicesLocationDataSource) bind LocationDataSource::class
+    factoryOf(::AndroidPermissionChecker) bind PermissionChecker::class
 
-    viewModel { MainViewModel(get(), get()) }
-    viewModel { DetailViewModel(get(), get()) }
+    viewModelOf(::MainViewModel)
+    viewModelOf(::DetailViewModel)
 }
 
 private val dataModule = module {
-    factory { RegionRepository(get(), get()) }
-    factory { MoviesRepository(get(), get(), get()) }
+    factoryOf(::RegionRepository)
+    factoryOf(::MoviesRepository)
 }
 
 private val useCasesModule = module {
-    factory { GetPopularMoviesUseCase(get()) }
-    factory { RequestMovieUseCase(get()) }
-    factory { RequestPopularMoviesUseCase(get()) }
-    factory { SwitchFavoriteUseCase(get()) }
+    factoryOf(::GetPopularMoviesUseCase)
+    factoryOf(::RequestMovieUseCase)
+    factoryOf(::RequestPopularMoviesUseCase)
+    factoryOf(::SwitchFavoriteUseCase)
 }
