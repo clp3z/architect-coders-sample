@@ -3,8 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.kapt'
     id 'kotlin-parcelize'
-    // id 'com.google.devtools.ksp'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -41,6 +41,12 @@ android {
         dataBinding true
     }
 
+    applicationVariants.configureEach { variant ->
+        variant.sourceSets.java.each {
+            it.srcDirs += "build/generated/ksp/${variant.name}/kotlin"
+        }
+    }
+
     namespace 'com.devexperto.architectcoders'
 }
 
@@ -72,15 +78,18 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.6.1'
 
     implementation 'com.github.bumptech.glide:glide:4.15.1'
-    kapt 'com.github.bumptech.glide:compiler:4.15.1'
+    ksp 'com.github.bumptech.glide:ksp:4.15.1'
 
     implementation 'io.arrow-kt:arrow-core:1.2.1'
 
-    implementation 'io.insert-koin:koin-android:3.4.0'
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-annotations:$koin_ksp_version"
+    ksp "io.insert-koin:koin-ksp-compiler:$koin_ksp_version"
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

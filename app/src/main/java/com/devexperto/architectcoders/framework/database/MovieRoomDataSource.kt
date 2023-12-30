@@ -6,8 +6,10 @@ import com.devexperto.architectcoders.domain.Movie
 import com.devexperto.architectcoders.framework.tryCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.koin.core.annotation.Factory
 import com.devexperto.architectcoders.framework.database.Movie as DatabaseMovie
 
+@Factory
 class MovieRoomDataSource(private val movieDAO: MovieDAO) : MovieLocalDataSource {
 
     override val movies: Flow<List<Movie>> = movieDAO.getMovies().toDomainModel()

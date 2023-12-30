@@ -5,8 +5,11 @@ import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
 import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
 import com.devexperto.architectcoders.framework.tryCall
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Named
 
-class MovieRetrofitDataSource(private val apiKey: String) : MovieRemoteDataSource {
+@Factory
+class MovieRetrofitDataSource(@Named("apiKey") private val apiKey: String) : MovieRemoteDataSource {
 
     override suspend fun getPopularMovies(region: String): Either<Error, List<Movie>> = tryCall {
         RemoteConnection.service
