@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.core.content.IntentCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -55,3 +56,6 @@ fun <T : Any> LifecycleOwner.launchAndCollect(
 
 val Context.app: App
     get() = applicationContext as App
+
+val Fragment.app: App
+    get() = requireActivity().applicationContext as App

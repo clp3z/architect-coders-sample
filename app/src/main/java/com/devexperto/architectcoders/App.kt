@@ -1,21 +1,17 @@
 package com.devexperto.architectcoders
 
 import android.app.Application
-import androidx.room.Room
-import com.devexperto.architectcoders.framework.database.MovieDatabase
+import com.devexperto.architectcoders.di.ApplicationComponent
+import com.devexperto.architectcoders.di.DaggerApplicationComponent
 
 class App : Application() {
 
-    private lateinit var movieDatabase: MovieDatabase
-    val movieDAO by lazy { movieDatabase.movieDao() }
+    lateinit var applicationComponent: ApplicationComponent
+        private set
 
     override fun onCreate() {
         super.onCreate()
 
-        movieDatabase = Room.databaseBuilder(
-            context = this,
-            klass = MovieDatabase::class.java,
-            name = "movies-database"
-        ).build()
+        applicationComponent = DaggerApplicationComponent.factory().create(this)
     }
 }
