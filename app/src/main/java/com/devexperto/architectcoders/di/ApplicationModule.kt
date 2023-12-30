@@ -13,7 +13,6 @@ import com.devexperto.architectcoders.framework.database.MovieRoomDataSource
 import com.devexperto.architectcoders.framework.retrofit.MovieRetrofitDataSource
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -21,7 +20,7 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    @Named("apiKey")
+    @ApiKey
     fun provideApiKey() = "b1b15e88fa797225412429c1c50c122a"
 
     @Provides
@@ -34,7 +33,7 @@ object ApplicationModule {
         ).build()
 
     @Provides
-    fun provideRemoteDataSource(@Named("apiKey") apiKey: String): MovieRemoteDataSource =
+    fun provideRemoteDataSource(@ApiKey apiKey: String): MovieRemoteDataSource =
         MovieRetrofitDataSource(apiKey)
 
     @Provides
