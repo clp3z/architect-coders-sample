@@ -1,53 +1,44 @@
 package com.devexperto.architectcoders
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
-import com.devexperto.architectcoders.data.MoviesRepository
-import com.devexperto.architectcoders.data.RegionRepository
+import com.devexperto.architectcoders.data.DataModule
 import com.devexperto.architectcoders.framework.database.MovieDatabase
-import com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase
-import com.devexperto.architectcoders.usecases.RequestMovieUseCase
-import com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
-import com.devexperto.architectcoders.usecases.SwitchFavoriteUseCase
+import com.devexperto.architectcoders.usecases.UseCasesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
-import org.koin.core.module.dsl.factoryOf
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
-import org.koin.ksp.generated.defaultModule
+import org.koin.ksp.generated.module
 
 fun Application.initDI() {
     startKoin {
         androidLogger(level = Level.ERROR)
         androidContext(this@initDI)
-        modules(appModule, dataModule, useCasesModule, defaultModule)
+        modules(AppModule().module, DataModule().module, UseCasesModule().module)
     }
 }
 
-private val appModule = module {
-    single(named("apiKey")) { "df913d0e8d85eb724270797250eb400f" }
+@Module
+@ComponentScan
+class AppModule {
 
-    single {
-        Room.databaseBuilder(
-            context = get(),
-            klass = MovieDatabase::class.java,
-            name = "movies-database"
-        ).build()
-    }
+    @Single
+    @Named("apiKey")
+    fun apiKey(): String = "df913d0e8d85eb724270797250eb400f"
 
-    single { get<MovieDatabase>().movieDao() }
-}
+    @Single
+    fun provideRoomDatabase(context: Context): MovieDatabase = Room.databaseBuilder(
+        context = context,
+        klass = MovieDatabase::class.java,
+        name = "movies-database"
+    ).build()
 
-private val dataModule = module {
-    factoryOf(::RegionRepository)
-    factoryOf(::MoviesRepository)
-}
-
-private val useCasesModule = module {
-    factoryOf(::GetPopularMoviesUseCase)
-    factoryOf(::RequestMovieUseCase)
-    factoryOf(::RequestPopularMoviesUseCase)
-    factoryOf(::SwitchFavoriteUseCase)
+    @Single
+    fun provideMovieDao(movieDatabase: MovieDatabase) = movieDatabase.movieDao()
 }
