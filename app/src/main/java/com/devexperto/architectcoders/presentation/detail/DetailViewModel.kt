@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class DetailViewModel(
     private val requestMovieUseCase: RequestMovieUseCase,
@@ -51,7 +52,7 @@ class DetailViewModel(
 }
 
 @Suppress("UNCHECKED_CAST")
-class DetailViewModelFactory(
+class DetailViewModelFactory @Inject constructor(
     private val requestMovieUseCase: RequestMovieUseCase,
     private val switchFavoriteUseCase: SwitchFavoriteUseCase
 ) : ViewModelProvider.Factory {

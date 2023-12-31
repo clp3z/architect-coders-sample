@@ -11,20 +11,19 @@ import com.devexperto.architectcoders.databinding.FragmentDetailBinding
 import com.devexperto.architectcoders.framework.toErrorMessage
 import com.devexperto.architectcoders.presentation.common.app
 import com.devexperto.architectcoders.presentation.common.launchAndCollect
+import javax.inject.Inject
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
-    private lateinit var component: DetailFragmentComponent
+    @Inject
+    lateinit var detailViewModelFactory: DetailViewModelFactory
+    private val viewModel by viewModels<DetailViewModel> { detailViewModelFactory }
 
     private val arguments: DetailFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<DetailViewModel> {
-        component.detailViewModelFactory
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        component = app.applicationComponent.plus(DetailFragmentModule)
+        app.applicationComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
