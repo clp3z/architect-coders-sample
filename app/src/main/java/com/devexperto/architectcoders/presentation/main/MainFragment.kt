@@ -12,14 +12,21 @@ import com.devexperto.architectcoders.presentation.common.launchAndCollect
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
+    private lateinit var component: MainFragmentComponent
+
     private val viewModel by viewModels<MainViewModel> {
-        app.applicationComponent.mainViewModelFactoryFactory
+        component.mainViewModelFactoryFactory
     }
 
     private lateinit var mainState: MainState
 
     private val moviesAdapter = MoviesAdapter {
         mainState.onMovieClicked(it)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        component = app.applicationComponent.plus(MainFragmentModule)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

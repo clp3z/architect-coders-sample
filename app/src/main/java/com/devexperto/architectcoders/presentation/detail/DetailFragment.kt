@@ -14,10 +14,17 @@ import com.devexperto.architectcoders.presentation.common.launchAndCollect
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
+    private lateinit var component: DetailFragmentComponent
+
     private val arguments: DetailFragmentArgs by navArgs()
 
     private val viewModel by viewModels<DetailViewModel> {
-        app.applicationComponent.detailViewModelFactoryFactory
+        component.detailViewModelFactory
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        component = app.applicationComponent.plus(DetailFragmentModule)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
