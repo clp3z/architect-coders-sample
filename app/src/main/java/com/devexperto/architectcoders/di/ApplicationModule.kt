@@ -2,15 +2,7 @@ package com.devexperto.architectcoders.di
 
 import android.app.Application
 import androidx.room.Room
-import com.devexperto.architectcoders.data.PermissionChecker
-import com.devexperto.architectcoders.data.datasources.LocationDataSource
-import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
-import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
-import com.devexperto.architectcoders.framework.AndroidPermissionChecker
-import com.devexperto.architectcoders.framework.PlayServicesLocationDataSource
 import com.devexperto.architectcoders.framework.database.MovieDatabase
-import com.devexperto.architectcoders.framework.database.MovieRoomDataSource
-import com.devexperto.architectcoders.framework.retrofit.MovieRetrofitDataSource
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -21,7 +13,7 @@ object ApplicationModule {
     @Provides
     @Singleton
     @ApiKey
-    fun provideApiKey() = "b1b15e88fa797225412429c1c50c122a"
+    fun provideApiKey() = "df913d0e8d85eb724270797250eb400f"
 
     @Provides
     @Singleton
@@ -33,18 +25,6 @@ object ApplicationModule {
         ).build()
 
     @Provides
-    fun provideRemoteDataSource(@ApiKey apiKey: String): MovieRemoteDataSource =
-        MovieRetrofitDataSource(apiKey)
-
-    @Provides
-    fun provideMovieLocalDataSource(movieDatabase: MovieDatabase): MovieLocalDataSource =
-        MovieRoomDataSource(movieDatabase.movieDao())
-
-    @Provides
-    fun provideLocationDataSource(application: Application): LocationDataSource =
-        PlayServicesLocationDataSource(application)
-
-    @Provides
-    fun providePermissionChecker(application: Application): PermissionChecker =
-        AndroidPermissionChecker(application)
+    @Singleton
+    fun provideMovieDAO(database: MovieDatabase) = database.movieDao()
 }

@@ -6,9 +6,12 @@ import com.devexperto.architectcoders.domain.Movie
 import com.devexperto.architectcoders.framework.tryCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 import com.devexperto.architectcoders.framework.database.Movie as DatabaseMovie
 
-class MovieRoomDataSource(private val movieDAO: MovieDAO) : MovieLocalDataSource {
+class MovieRoomDataSource @Inject constructor(
+    private val movieDAO: MovieDAO
+) : MovieLocalDataSource {
 
     override val movies: Flow<List<Movie>> = movieDAO.getMovies().toDomainModel()
 
