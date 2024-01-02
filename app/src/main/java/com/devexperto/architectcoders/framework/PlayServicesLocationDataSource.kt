@@ -7,9 +7,12 @@ import android.location.Location
 import com.devexperto.architectcoders.data.datasources.LocationDataSource
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
+import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class PlayServicesLocationDataSource(application: Application) : LocationDataSource {
+class PlayServicesLocationDataSource @Inject constructor(
+    application: Application
+) : LocationDataSource {
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
     private val geocoder = Geocoder(application)

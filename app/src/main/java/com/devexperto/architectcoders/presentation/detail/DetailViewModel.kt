@@ -1,21 +1,23 @@
 package com.devexperto.architectcoders.presentation.detail
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
 import com.devexperto.architectcoders.framework.toError
 import com.devexperto.architectcoders.usecases.RequestMovieUseCase
 import com.devexperto.architectcoders.usecases.SwitchFavoriteUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailViewModel(
+@HiltViewModel
+class DetailViewModel @Inject constructor(
     private val requestMovieUseCase: RequestMovieUseCase,
     private val switchFavoriteUseCase: SwitchFavoriteUseCase
 ) : ViewModel() {
@@ -48,14 +50,4 @@ class DetailViewModel(
             }
         }
     }
-}
-
-@Suppress("UNCHECKED_CAST")
-class DetailViewModelFactory(
-    private val requestMovieUseCase: RequestMovieUseCase,
-    private val switchFavoriteUseCase: SwitchFavoriteUseCase
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        DetailViewModel(requestMovieUseCase, switchFavoriteUseCase) as T
 }

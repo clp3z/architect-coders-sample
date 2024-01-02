@@ -2,11 +2,15 @@ package com.devexperto.architectcoders.framework.retrofit
 
 import arrow.core.Either
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
+import com.devexperto.architectcoders.di.ApiKey
 import com.devexperto.architectcoders.domain.Error
 import com.devexperto.architectcoders.domain.Movie
 import com.devexperto.architectcoders.framework.tryCall
+import javax.inject.Inject
 
-class MovieRetrofitDataSource(private val apiKey: String) : MovieRemoteDataSource {
+class MovieRetrofitDataSource @Inject constructor(
+    @ApiKey private val apiKey: String
+) : MovieRemoteDataSource {
 
     override suspend fun getPopularMovies(region: String): Either<Error, List<Movie>> = tryCall {
         RemoteConnection.service
