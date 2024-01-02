@@ -1,25 +1,31 @@
 package com.devexperto.architectcoders.presentation.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.devexperto.architectcoders.domain.Error
+import com.devexperto.architectcoders.domain.Movie
 import com.devexperto.architectcoders.framework.toError
+import com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase
+import com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
-    private val getPopularMoviesUseCase: com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase,
-    private val requestPopularMoviesUseCase: com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val requestPopularMoviesUseCase: RequestPopularMoviesUseCase
 ) : ViewModel() {
 
     data class ViewState(
         var isLoading: Boolean = true,
-        val movies: List<com.devexperto.architectcoders.domain.Movie> = emptyList(),
-        val error: com.devexperto.architectcoders.domain.Error? = null
+        val movies: List<Movie> = emptyList(),
+        val error: Error? = null
     )
 
     private val _viewState = MutableStateFlow(ViewState())
@@ -45,14 +51,4 @@ class MainViewModel(
             _viewState.update { it.copy(isLoading = false, error = error) }
         }
     }
-}
-
-@Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(
-    private val getPopularMoviesUseCase: com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase,
-    private val requestPopularMoviesUseCase: com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        MainViewModel(getPopularMoviesUseCase, requestPopularMoviesUseCase) as T
 }
