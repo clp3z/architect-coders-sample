@@ -1,3 +1,5 @@
+import com.devexperto.architectcoders.buildsrc.Libs
+
 plugins {
     id("java-library")
     id("org.jetbrains.kotlin.jvm")
@@ -12,7 +14,6 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-
-    implementation("javax.inject:javax.inject:1")
+    implementation(Libs.Kotlin.Coroutines.core)
+    implementation(Libs.JavaX.inject)
 }
