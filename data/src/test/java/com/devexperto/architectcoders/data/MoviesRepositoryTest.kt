@@ -1,5 +1,7 @@
 package com.devexperto.architectcoders.data
 
+import arrow.core.right
+import com.devexperto.architectcoders.data.RegionRepository.Companion.DEFAULT_REGION
 import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
 import com.devexperto.architectcoders.domain.Movie
@@ -11,11 +13,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-private val movie = Movie(
+private val sampleMovie = Movie(
     id = 1,
     title = "title",
     overview = "overview",
@@ -42,7 +45,7 @@ class MoviesRepositoryTest {
 
     private lateinit var moviesRepository: MoviesRepository
 
-    private val localMovies = flowOf(listOf(movie))
+    private val localMovies = flowOf(listOf(sampleMovie))
 
     @Before
     fun setUp() {
@@ -59,8 +62,32 @@ class MoviesRepositoryTest {
     }
 
     @Test
+    fun `popularMovies are saved to local data source when it's empty`(): Unit = runBlocking { // Given
+        whenever(localDataSource.isEmpty()).thenReturn(true)
+        whenever(regionRepository.getLastRegion()).thenReturn(DEFAULT_REGION)
+
+        val remoteMovies = listOf(sampleMovie)
+        whenever(remoteDataSource.getPopularMovies(any())).thenReturn(remoteMovies.right())
+
+        moviesRepository.requestPopularMovies()
+
+        verify(localDataSource).save(remoteMovies)
+    }
+
+    @Test
+    fun `Requesting a movie by id are retrieved from the local data source`(): Unit = runBlocking {
+        val id = 7
+        val movie = flowOf(sampleMovie.copy(id = id))
+        whenever(localDataSource.get(id)).thenReturn(movie)
+
+        val result = moviesRepository.requestMovieById(id)
+
+        assertEquals(movie, result)
+    }
+
+    @Test
     fun `switchFavorite marks as favorite if not favorite`(): Unit = runBlocking {
-        val movie = movie.copy(isFavorite = false)
+        val movie = sampleMovie.copy(isFavorite = false)
 
         moviesRepository.switchFavorite(movie)
 
@@ -69,7 +96,7 @@ class MoviesRepositoryTest {
 
     @Test
     fun `switchFavorite un-marks as favorite if favorite`(): Unit = runBlocking {
-        val movie = movie.copy(isFavorite = true)
+        val movie = sampleMovie.copy(isFavorite = true)
 
         moviesRepository.switchFavorite(movie)
 
