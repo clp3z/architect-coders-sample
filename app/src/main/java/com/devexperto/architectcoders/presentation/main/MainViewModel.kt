@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     data class ViewState(
-        var isLoading: Boolean = true,
+        var isLoading: Boolean = false,
         val movies: List<Movie> = emptyList(),
         val error: Error? = null
     )
@@ -34,12 +34,8 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getPopularMoviesUseCase()
-                .catch { throwable ->
-                    _viewState.update { it.copy(error = throwable.toError()) }
-                }
-                .collect { movies ->
-                    _viewState.update { it.copy(isLoading = false, movies = movies) }
-                }
+                .catch { throwable -> _viewState.update { it.copy(error = throwable.toError()) } }
+                .collect { movies -> _viewState.update { it.copy(movies = movies) } }
         }
     }
 
@@ -48,7 +44,7 @@ class MainViewModel @Inject constructor(
             _viewState.update { it.copy(isLoading = true) }
 
             val error = requestPopularMoviesUseCase()
-            _viewState.update { it.copy(isLoading = false, error = error) }
+            _viewState.update { it.copy(error = error) }
         }
     }
 }
