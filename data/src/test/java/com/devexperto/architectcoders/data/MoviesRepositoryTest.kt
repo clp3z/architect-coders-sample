@@ -4,7 +4,7 @@ import arrow.core.right
 import com.devexperto.architectcoders.data.RegionRepository.Companion.DEFAULT_REGION
 import com.devexperto.architectcoders.data.datasources.MovieLocalDataSource
 import com.devexperto.architectcoders.data.datasources.MovieRemoteDataSource
-import com.devexperto.architectcoders.domain.Movie
+import com.devexperto.architectcoders.testShared.sampleMovie
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -17,19 +17,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-
-private val sampleMovie = Movie(
-    id = 1,
-    title = "title",
-    overview = "overview",
-    releaseDate = "releaseDate",
-    posterUrl = "posterUrl",
-    originalTitle = "originalTitle",
-    originalLanguage = "originalLanguage",
-    popularity = 1.0,
-    voteAverage = 1.0,
-    isFavorite = true
-)
 
 @RunWith(MockitoJUnitRunner::class)
 class MoviesRepositoryTest {

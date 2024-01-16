@@ -17,6 +17,7 @@ dependencies {
     implementation(Libs.Arrow.core)
     implementation(Libs.JavaX.inject)
 
+    testImplementation(project(":testShared"))
     testImplementation(Libs.JUnit.junit)
     testImplementation(Libs.Mockito.kotlin)
     testImplementation(Libs.Mockito.inline)
