@@ -5,6 +5,7 @@ import com.devexperto.architectcoders.domain.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieLocalDataSource {
+
     val movies: Flow<List<Movie>>
 
     fun get(id: Int): Flow<Movie>

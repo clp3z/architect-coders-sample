@@ -42,7 +42,7 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             viewState.value.movie?.let { movie ->
                 val error = switchFavoriteUseCase(movie)
-                _viewState.update { it.copy(error = error) }
+                _viewState.update { it.copy(movie = movie, error = error) }
             }
         }
     }

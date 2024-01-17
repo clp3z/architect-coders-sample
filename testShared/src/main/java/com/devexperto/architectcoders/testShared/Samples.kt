@@ -14,3 +14,11 @@ val sampleMovie = Movie(
     5.1,
     false
 )
+
+val sampleMovieList = listOf(
+    sampleMovie.copy(1),
+    sampleMovie.copy(2),
+    sampleMovie.copy(3),
+    sampleMovie.copy(4),
+    sampleMovie.copy(5),
+)

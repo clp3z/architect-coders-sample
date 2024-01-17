@@ -1,7 +1,7 @@
 package com.devexperto.architectcoders.presentation.detail
 
 import app.cash.turbine.test
-import com.devexperto.architectcoders.presentation.CoroutinesTestRule
+import com.devexperto.architectcoders.rules.CoroutinesTestRule
 import com.devexperto.architectcoders.testShared.sampleMovie
 import com.devexperto.architectcoders.usecases.RequestMovieUseCase
 import com.devexperto.architectcoders.usecases.SwitchFavoriteUseCase
@@ -61,11 +61,12 @@ class DetailViewModelTest {
         verify(switchFavoriteUseCase).invoke(movie)
     }
 
+    // TODO
     @Test
     fun `Favorite action calls the corresponding use case alternative`() = runTest {
         viewModel = buildViewModel()
-
         viewModel.onViewReady(id)
+
         viewModel.onFavoriteClicked()
 
         viewModel.viewState.test {

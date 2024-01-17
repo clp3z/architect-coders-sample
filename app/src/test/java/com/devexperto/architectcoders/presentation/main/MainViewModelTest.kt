@@ -3,7 +3,7 @@
 package com.devexperto.architectcoders.presentation.main
 
 import app.cash.turbine.test
-import com.devexperto.architectcoders.presentation.CoroutinesTestRule
+import com.devexperto.architectcoders.rules.CoroutinesTestRule
 import com.devexperto.architectcoders.testShared.sampleMovie
 import com.devexperto.architectcoders.usecases.GetPopularMoviesUseCase
 import com.devexperto.architectcoders.usecases.RequestPopularMoviesUseCase

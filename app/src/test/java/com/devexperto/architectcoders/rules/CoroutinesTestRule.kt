@@ -1,4 +1,4 @@
-package com.devexperto.architectcoders.presentation
+package com.devexperto.architectcoders.rules
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
