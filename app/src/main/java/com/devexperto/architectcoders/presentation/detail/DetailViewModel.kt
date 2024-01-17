@@ -33,12 +33,8 @@ class DetailViewModel @Inject constructor(
     fun onViewReady(movieId: Int) {
         viewModelScope.launch {
             requestMovieUseCase(movieId)
-                .catch { throwable ->
-                    _viewState.update { it.copy(error = throwable.toError()) }
-                }
-                .collect { movie ->
-                    _viewState.update { ViewState(movie) }
-                }
+                .catch { throwable -> _viewState.update { it.copy(error = throwable.toError()) } }
+                .collect { movie -> _viewState.update { ViewState(movie) } }
         }
     }
 

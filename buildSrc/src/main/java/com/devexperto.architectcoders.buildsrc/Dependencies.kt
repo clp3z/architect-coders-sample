@@ -104,6 +104,11 @@ object Libs {
         const val inline = "org.mockito:mockito-inline:5.2.0"
     }
 
+    object Turbine {
+        private const val version = "0.12.0"
+        const val turbine = "app.cash.turbine:turbine:$version"
+    }
+
     object JavaX {
         const val inject = "javax.inject:javax.inject:1"
     }

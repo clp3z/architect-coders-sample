@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(
             _viewState.update { it.copy(isLoading = true) }
 
             val error = requestPopularMoviesUseCase()
-            _viewState.update { it.copy(error = error) }
+            _viewState.update { it.copy(isLoading = false, error = error) }
         }
     }
 }
